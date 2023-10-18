@@ -1,0 +1,21 @@
+.DatabaseListItem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 400px;
+    height: 100px;
+    padding: 15px;
+    margin: 15px;
+    border: 4px solid rgb(41, 41, 41);
+    border-radius: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.DatabaseListItem h2 {
+    color: rgb(85, 85, 85);
+}
+
+.DatabaseListItem:hover {
+    cursor: pointer;
+    border-color: rgb(252, 248, 12);
+}
