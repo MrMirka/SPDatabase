@@ -13,10 +13,7 @@ import { curentPlayers } from '../../database/dataSlice'
 import { setPlayers } from "../../database/dataSlice";
 
 
-function ClubsList() {
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const name = searchParams.get('name');
+function ClubsList({currentCollection}) {
 
     const players = useSelector(curentPlayers)
     const dispatch = useDispatch()
@@ -28,7 +25,7 @@ function ClubsList() {
     const [focusPlayer, setFocusPlayer] = useState(null)
     const [dataForEdit, setDataForEdit] = useState(null)
     const [isLoading, setIsLoading] = useState(false);
-    const [isPlayers, setIsPlayers] = useState(name === 'players');
+    const [isPlayers, setIsPlayers] = useState(currentCollection === 'players');
    
 
  
@@ -40,9 +37,10 @@ function ClubsList() {
     const getGroups = async () => {
         setIsLoading(true);
         try {
-            const collectionData = await fetchCollection(name);
+            const collectionData = await fetchCollection(currentCollection);
             const data = getFields(collectionData, isPlayers);
-            if(isPlayers) {
+            if(currentCollection === 'players') {
+                console.log("ddssd")
                 dispatch(setPlayers(data))
             }
             setTimeout(() => {
@@ -55,14 +53,12 @@ function ClubsList() {
         }
     }
 
-    useEffect(()=>{console.log(`Игрочки ${players}`)},[players])
+    useEffect(()=> {getGroups()},[currentCollection]); 
 
-    useEffect(()=> {getGroups()},[]); 
-
-    const getEdit = (id, name, imageUrl) => {
+    const getEdit = (id, currentCollection, imageUrl) => {
         setDataForEdit({
             id: id,
-            name: name,
+            name: currentCollection,
             imageUrl: imageUrl
         }) 
         toggleModal();
@@ -86,18 +82,17 @@ function ClubsList() {
     return (
          <>
         {!isLoading ? (<div className={styles.ClubsList}>
-            <h1>{name}</h1>
-            <button onClick={newRecord}>New {name}</button>
-            { isModalOpen && <ModalGroup title ={name} isOpen={isModalOpen} onClose={toggleModal} dataForEdit = {dataForEdit} />}
+            <button onClick={newRecord}>New {currentCollection}</button>
+            { isModalOpen && <ModalGroup title ={currentCollection} isOpen={isModalOpen} onClose={toggleModal} dataForEdit = {dataForEdit} />}
             { isPlayersOpen && <PlayerEditPhoto title = {"Настройка формы"} onClose = { () => setIsPlayersModalOpen((v) => !v) } player = {focusPlayer} setPlayer = {setFocusPlayer}/>}
-            {players.map((value) => {
+            {players && players.map((value) => {
                 return (
                 <ClubItem 
                     key = {value.id} 
                     title = {value.name} 
                     imageUrl = {value.logoURL}
                     onEdit={() => getEdit(value.id, value.name, value.logoURL)}
-                    onDelete={() => deleteItem(value.id, name)}
+                    onDelete={() => deleteItem(value.id, currentCollection)}
                     isPlayer = {isPlayers}
                     editPlayer = { () => editPlayer(value)}/>
                 )

@@ -11,6 +11,7 @@ import Root from './components/Root';
 import { initializeApp } from 'firebase/app';
 import { Provider } from 'react-redux';
 import store from './database/store'
+import NestedData from './components/structure/Nestdata';
 
 
 
@@ -35,7 +36,7 @@ root.render(
       <Routes>
         <Route path="/" element={<Root />}>
           <Route index element={<App />} />
-          <Route path="database" element={<DatabaseList />} />
+          <Route path="database" element={<NestedData />} />
           <Route path="database/groups" element={<ClubsList />} />
           <Route path="*" element={<ErrorPage />} />
         </Route>

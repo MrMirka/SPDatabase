@@ -4,16 +4,12 @@ import DatabaseListItem from "./DatabaseListItem";
 import { Link, useNavigate } from 'react-router-dom';
 
 
-function DatabaseList() {
-    const navigate = useNavigate();
-    const clubs = "clubs";
-    const unions = "unions";
-    const players = "players";
+function DatabaseList({focusItem}) {
     return (
         <div className={styles.DatabaseList}>
-             <DatabaseListItem title={'Игроки'} onClick = {()=>{navigate(`groups?name=${players}`)}}></DatabaseListItem>   
-             <DatabaseListItem title={'Сборные'} onClick = {()=>{navigate(`groups?name=${unions}`)}}></DatabaseListItem>   
-             <DatabaseListItem title={'Клубы'} onClick = {()=>{navigate(`groups?name=${clubs}`)}}></DatabaseListItem>      
+             <DatabaseListItem title={'Игроки'} onClick = {()=>{ focusItem('players') }}></DatabaseListItem>   
+             <DatabaseListItem title={'Сборные'} onClick = {()=>{ focusItem('unions') }}></DatabaseListItem>   
+             <DatabaseListItem title={'Клубы'} onClick = {()=>{ focusItem('clubs') }}></DatabaseListItem>      
         </div>
     );
 }
