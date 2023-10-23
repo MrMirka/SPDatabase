@@ -7,6 +7,7 @@ import { curentPlayers, curentEvents, curentClubs, curentUnions } from '../../da
 import { setPlayers, setEvents, setClubs, setUnions } from "../../database/dataSlice";
 import { fetchCollection } from "../../utils/Repository";
 import MyLoader from "../helpers/MyLoader";
+import SearchInput from "../ui/SearchInput";
 
 function BaseBlockElements({ currentCollection, focusElement }) {
     const [isLoading, setIsLoading] = useState(false);
@@ -15,6 +16,7 @@ function BaseBlockElements({ currentCollection, focusElement }) {
     const clubs = useSelector(curentClubs)
     const unions = useSelector(curentUnions)
     const events = useSelector(curentEvents)
+    const [searchValue, setSearchValue] = useState("")
 
 
     const dispatch = useDispatch()
@@ -41,6 +43,9 @@ function BaseBlockElements({ currentCollection, focusElement }) {
         }
     }
 
+    /**
+     * Обновляем дынные если были внесены измененния
+     */
     useEffect(() => {
         const data = dataMap[currentCollection];
         if (data) {
@@ -48,6 +53,9 @@ function BaseBlockElements({ currentCollection, focusElement }) {
         }
     }, [players, clubs, unions, events, currentCollection]);
 
+    /**
+     * Получаем данные коллекции с сервера
+     */
     const getGroups = async () => {
         setIsLoading(true);
         try {
@@ -64,7 +72,13 @@ function BaseBlockElements({ currentCollection, focusElement }) {
             setIsLoading(false);
         }
     }
-    useEffect(() => { getGroups() }, [currentCollection]);
+    useEffect(() => { getGroups() }, [currentCollection]); //Фокус коллекции при клике
+
+    const filteredElements = selectElements.filter(element => 
+        element.name.toLowerCase().includes(searchValue.toLowerCase())
+    );
+
+
     return (
         <>
 
@@ -72,9 +86,11 @@ function BaseBlockElements({ currentCollection, focusElement }) {
 
                 <div className={styles.Loader}>
                     {isLoading && <MyLoader />}
+                    <SearchInput value ={searchValue} setValue = {setSearchValue}/>
                 </div>
-
-                <ListElement elements={selectElements} focusElement={focusElement} />
+                <div></div>
+               
+                <ListElement elements={filteredElements} focusElement={focusElement} />
             </div>
 
 

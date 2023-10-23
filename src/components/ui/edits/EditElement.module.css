@@ -1,6 +1,5 @@
 .EditElement {
     padding: 18px;
-    width: 100%;
     height: 100vh;
     border-left: 1px solid gray;
     position: relative;
@@ -16,11 +15,11 @@
 }
 
 .InfoBlock {
-    margin-top: 34px;
+    height: 150px;
     display: flex;           
     flex-direction: row;     
     align-items: center;    
-    justify-content: flex-start; 
+    justify-content: center; 
     gap: 10px;    
 }
 

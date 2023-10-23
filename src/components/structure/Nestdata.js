@@ -23,7 +23,7 @@ function NestedData() {
             <div className={styles.Nest}>
                 <DatabaseList focusItem = { setSelectCollection }/>
                 <BaseBlockElements currentCollection = { selectCollection } focusElement = {setFocusElement}/>
-                {  <EditElement currentCollection = {selectCollection} currentElement = {focusElement}/>}
+                <EditElement currentCollection = {selectCollection} currentElement = {focusElement}/>
             </div>
         </>
     );

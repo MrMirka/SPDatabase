@@ -10,6 +10,7 @@ function DatabaseList({focusItem}) {
              <DatabaseListItem title={'Игроки'} onClick = {()=>{ focusItem('players') }}></DatabaseListItem>   
              <DatabaseListItem title={'Сборные'} onClick = {()=>{ focusItem('unions') }}></DatabaseListItem>   
              <DatabaseListItem title={'Клубы'} onClick = {()=>{ focusItem('clubs') }}></DatabaseListItem>      
+             <DatabaseListItem title={'Эвенты'} onClick = {()=>{ focusItem('clubs') }}></DatabaseListItem>      
         </div>
     );
 }
