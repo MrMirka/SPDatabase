@@ -4,13 +4,74 @@ import { updatePlayer, updateClub, updateUnion, updateEvent } from '../../../dat
 import { useDispatch } from 'react-redux';
 import AvatarElement from "./AvatarElement";
 import TextInput from "../../helpers/UI/TextInput";
-import { makeGroup, uploadFile } from "../../../utils/Controllers";
+import { makeGroup, makeGroup2, uploadFile } from "../../../utils/Controllers";
+import MyButton from "../../MyButton";
+import MyLoader from "../../helpers/MyLoader";
 
 
 function EditElement({ currentCollection, currentElement }) {
+
+    const baseFilesState = { logoURL: null };
+    const playerFilesState = {
+        clubGuestURL: null,
+        clubOwnerURL: null,
+        unionGuestURL: null,
+        unionOwnerURL: null
+    };
+
+    const initialFilesState = currentCollection === 'players' ? { ...baseFilesState, ...playerFilesState } : baseFilesState;
+
     const [element, setElement] = useState(currentElement)
-    const [logoImage, setLogoImage] = useState(null) //Изображение выбранное на диске
+    const [files, setFiles] = useState(initialFilesState);
     const [makeRecord, setMakeRecord] = useState(false)
+    const [isSaveClicked, setIsSaveClicked] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
+
+    const handleSetFile = (key) => (file) => {
+        setFiles(prevFiles => ({ ...prevFiles, [key]: file }));
+    };
+
+    const uploadImagesAndGetUrls = async () => {
+        const urls = await Promise.all(Object.keys(files).map((key) =>
+            new Promise((resolve) => {
+                if (files[key]) {
+                    uploadFile(files[key], key, (url) => {
+                        resolve({ key, url });
+                    });
+                } else {
+                    resolve(null);
+                }
+            })
+        ));
+        return urls.filter(Boolean);
+    };
+
+    const handleSubmit = async () => {
+        setIsLoading(true)
+        const urls = await uploadImagesAndGetUrls();
+        const updatedElement = { ...element };
+        urls.forEach(({ key, url }) => {
+            updatedElement[key] = url;
+        });
+
+        setElement(updatedElement);
+        setIsSaveClicked(true);
+    };
+
+    useEffect(() => {
+        if (isSaveClicked) {
+            setMakeRecord(true)
+            setIsSaveClicked(false);
+        }
+    }, [element, isSaveClicked]);
+
+
+
+
+
+
+
 
     const dispatch = useDispatch();
 
@@ -39,16 +100,25 @@ function EditElement({ currentCollection, currentElement }) {
 
     useEffect(() => {
         if (makeRecord) {
-            const id = element.id
-            const title = element.name
-            const logoURL = element.logoURL
+            const obj = {
+                id: element.id,
+                name: element.name,
+                logoURL: element.logoURL
+            }
+            if (currentCollection === 'players') {
+                obj['clubGuestURL'] = element.clubGuestURL
+                obj['clubOwnerURL'] = element.clubOwnerURL
+                obj['unionGuestURL'] = element.unionGuestURL
+                obj['unionOwnerURL'] = element.unionOwnerURL
+            }
             const collection = currentCollection
-            makeGroup(id, title, logoURL, collection, (status) => {
+            makeGroup2(obj, collection, (status) => {
                 if (status) {
                     activateDispatch(currentCollection)
                 }
             })
             setMakeRecord(false)
+            setIsLoading(false)
         }
 
     }, [makeRecord])
@@ -58,7 +128,8 @@ function EditElement({ currentCollection, currentElement }) {
      */
     useEffect(() => {
         setElement(currentElement)
-        setLogoImage(null)
+        const newFilesState = currentCollection === 'players' ? { ...baseFilesState, ...playerFilesState } : baseFilesState;
+        setFiles(newFilesState);
     }, [currentElement])
 
     /**
@@ -66,34 +137,45 @@ function EditElement({ currentCollection, currentElement }) {
     */
     useEffect(() => {
         setElement(null)
-        setLogoImage(null)
+        const newFilesState = currentCollection === 'players' ? { ...baseFilesState, ...playerFilesState } : baseFilesState;
+        setFiles(newFilesState);
     }, [currentCollection])
 
-    /**
-     * Сохраняем изменения в существующую запись или создаем новыю
-     */
-    const handleSaveOrNew = () => {
-        if (logoImage !== null) {
-            uploadFile(logoImage, currentCollection, (url) => {
-                setElement(prevElement => ({ ...prevElement, logoURL: url }));
-                setMakeRecord(true)
-            })
-        } else {
-            setMakeRecord(true)
-        }
-
-    }
 
     return (
         <div className={styles.EditElement}>
             {element &&
-                <>
-                    <div>
-                        <AvatarElement logoURL={element.logoURL} file={logoImage} setFile={setLogoImage} />
-                        <TextInput element={element} setElement={setElement} />
-                        <button onClick={handleSaveOrNew}>Сохранить</button>
+                <>   
+                    <div className={styles.Loader}>
+                        {isLoading && <MyLoader />}
                     </div>
 
+                    <div className={styles.InfoBlock}>
+                        <AvatarElement
+                            key="logoURL"
+                            file={files.logoURL}
+                            setFile={handleSetFile("logoURL")}
+                            logoURL={element.logoURL}
+                            imgSize={'small'}
+                        />
+                        <TextInput element={element} setElement={setElement} />
+                    </div>
+                    <div className={styles.UniformBlock}>
+                        {Object.entries(files).filter(([key]) => key !== 'logoURL').map(([key, file]) => (
+                            <AvatarElement
+                                name = {key}
+                                key={key}
+                                file={file}
+                                setFile={handleSetFile(key)}
+                                logoURL={element[key]}
+                                imgSize={'big'}
+                            />
+                        ))}
+                    </div>
+                    <div className={styles.Controls}>
+                    <MyButton onClick={handleSubmit}>Сохранить</MyButton>
+                    </div>
+                    
                 </>
             }
 

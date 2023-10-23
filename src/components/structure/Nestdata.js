@@ -16,7 +16,7 @@ function NestedData() {
     const [focusElement, setFocusElement] = useState(null);
     const [isFocus, setIsFocus] = useState(false)
 
-  
+  //useEffect(()=>{console.log(focusElement)},[focusElement])
     
     return (  
         <>

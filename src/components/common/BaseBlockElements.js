@@ -67,12 +67,17 @@ function BaseBlockElements({ currentCollection, focusElement }) {
     useEffect(() => { getGroups() }, [currentCollection]);
     return (
         <>
-            {!isLoading ?
-                <div className={styles.BaseBlockElements}>
-                    <ListElement elements={selectElements} focusElement = {focusElement}/>
-                </div> :
-                <MyLoader />
-            }
+
+            <div className={styles.BaseBlockElements}>
+
+                <div className={styles.Loader}>
+                    {isLoading && <MyLoader />}
+                </div>
+
+                <ListElement elements={selectElements} focusElement={focusElement} />
+            </div>
+
+
         </>
 
     );

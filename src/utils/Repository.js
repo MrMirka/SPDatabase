@@ -127,6 +127,23 @@ export const uploadToFirebase = (selectedFile, subFolder) => {
     }
   };
 
+  export const updateGroup2 = async (obj, groupName) => {
+    const db = getFirestore();
+    const clubDocRef = doc(db, groupName, obj.id);
+
+   
+  
+    try {
+      await updateDoc(clubDocRef, obj);
+  
+      console.log('Запись обновлена');
+      return true;
+    } catch (error) {
+      console.error('Ошибка при обновлении записи:', error);
+      return false;
+    }
+  };
+
   /**
    * Редактируем картинки с формой игрока
    * @param {*} id ID игрока

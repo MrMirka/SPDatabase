@@ -3,4 +3,10 @@
     outline: none;          
     background: transparent;
     color: white;
+    font-size: 34px;
+    width: 100%;
+}
+
+.TextInput:focus {
+    border-bottom: 1px solid gray;
 }

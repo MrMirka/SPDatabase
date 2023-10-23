@@ -1,12 +1,23 @@
 import React, { useState } from "react";
 import InputFile from "../../helpers/UI/InputFile";
-function AvatarElement({logoURL,file, setFile}) {
+import styles from './AvatarElement.module.css'
 
+function AvatarElement({logoURL,file, setFile, imgSize, name}) {
+    
     const imageUrl = file ? URL.createObjectURL(file) : logoURL;
+    const imageClass = imgSize === 'small' ? styles.SmallImage : styles.BigImage;
+
+    const nameMap = {
+        clubGuestURL: "Клуб гость",
+        clubOwnerURL: "Клуб хозяин",
+        unionGuestURL: "Сборная гость",
+        unionOwnerURL: "Сборная хозяин",
+    }
 
     return (
-        <div>
-            <img src={imageUrl} alt ='image'></img>
+        <div className={styles.AvatarElement}>
+            <p>{nameMap[name]}</p>
+            <img src={imageUrl} alt ='image' className={imageClass}></img>
             <InputFile setFile={setFile} />
         </div>
     );

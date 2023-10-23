@@ -9,6 +9,7 @@ function InputFile({setFile}) {
 
     return ( 
         <div className={styles.InputFileContainer}>
+            <label htmlFor="file">Выбрать</label>
             <input type="file" onChange={handleFileChange} />
         </div>
     );
