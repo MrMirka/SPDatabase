@@ -41,7 +41,7 @@ function Authentication ({setStatus}) {
             <form>
                 <MyInput name = {'name'} value={authContent.name} onChange = { onChange } type="text"  placeholder="name"></MyInput>
                 <MyInput name = {'password'} value={authContent.password} onChange = { onChange } type="password"  placeholder="passowrd"></MyInput>
-                <MyButton onClick={handleAuth}>Войти</MyButton>s
+                <MyButton onClick={handleAuth}>Войти</MyButton>
             </form>
             </div>
         </div>
