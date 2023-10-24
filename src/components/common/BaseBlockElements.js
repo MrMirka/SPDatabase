@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getFields } from "../../utils/Models";
+import { getEmptyElement, getFields } from "../../utils/Models";
 import styles from './BaseBlockElements.module.css'
 import ListElement from "../ui/ListElement";
 import { useSelector, useDispatch } from 'react-redux';
@@ -20,6 +20,12 @@ function BaseBlockElements({ currentCollection, focusElement }) {
 
 
     const dispatch = useDispatch()
+
+    const newRecordHundler = () => {
+        const emptyRecord = getEmptyElement(currentCollection === 'players')
+        console.log(emptyRecord)
+        focusElement(emptyRecord)
+    }
 
 
     const actionMap = {
@@ -87,6 +93,7 @@ function BaseBlockElements({ currentCollection, focusElement }) {
                 <div className={styles.Loader}>
                     {isLoading && <MyLoader />}
                     <SearchInput value ={searchValue} setValue = {setSearchValue}/>
+                    <button onClick={newRecordHundler}>Добавить</button>
                 </div>
                 <div></div>
                

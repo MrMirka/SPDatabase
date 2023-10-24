@@ -1,4 +1,4 @@
-import { addGroup, deleteDocumentById, updateGroup,updateGroup2, updatePlayerUniform, uploadToFirebase } from "./Repository";
+import { addGroup, addGroup2, deleteDocumentById, updateGroup,updateGroup2, updatePlayerUniform, uploadToFirebase } from "./Repository";
 
 /**
  * Создваем запись в коллекции
@@ -26,10 +26,11 @@ export const makeGroup = async (id, groupName, logoUrl, title, callBack) => {
 export const makeGroup2 = async (obj, title, callBack) => {
   try {
     let status;
-    if (obj.id != "") {
+    if (obj.id !== "" ) {
       status = await updateGroup2(obj, title);
     } else {
-      status = await addGroup(obj, title);
+      console.log(obj)
+      status = await addGroup2(obj, title);
     }
 
     callBack(status)
@@ -63,7 +64,9 @@ export const uploadFile = async (file, title, callBack) => {
 export const deleteItem = async (id, collectionName) => {
   try {
     const deleteStatus = await deleteDocumentById(id, collectionName);
+    return deleteStatus
   } catch (error) {
     console.log("Ошибка при удалении " + error)
   }
+  return false
 }

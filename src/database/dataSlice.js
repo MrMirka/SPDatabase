@@ -16,6 +16,16 @@ export const playerSlice = createSlice({
             if (index !== -1) {
                 players[index] = playerToUpdate;
             }
+        },
+        addPlayer: (state, action) => {
+            const newItem = action.payload;
+            state.value.push(newItem);
+        },
+        removePlayer: (state, action) => {
+            const itemToRemove = action.payload;
+            const list = state.value;
+            const index = list.findIndex(item => item.id === itemToRemove.id);
+            list.splice(index,1)
         }
     }
 });
@@ -36,6 +46,16 @@ export const eventsSlice = createSlice({
             if(index !== -1) {
                 events[index] = eventToUpdate
             }
+        },
+        addEvent: (state, action) => {
+            const newItem = action.payload;
+            state.value.push(newItem);
+        },
+        removeEvent: (state, action) => {
+            const itemToRemove = action.payload;
+            const list = state.value;
+            const index = list.findIndex(item => item.id === itemToRemove.id);
+            list.splice(index,1)
         }
     }
 });
@@ -56,6 +76,16 @@ export const clubsSlice = createSlice({
             if(index !== -1) {
                 clubs[index] = clubToUpdate
             }
+        },
+        addClub: (state, action) => {
+            const newItem = action.payload;
+            state.value.push(newItem);
+        },
+        removeClub: (state, action) => {
+            const itemToRemove = action.payload;
+            const list = state.value;
+            const index = list.findIndex(item => item.id === itemToRemove.id);
+            list.splice(index,1)
         }
     }
 });
@@ -76,15 +106,25 @@ export const unionsSlice = createSlice({
             if(index !== -1) {
                 unions[index] = unionToUpdate
             }
+        },
+        addUnion: (state, action) => {
+            const newItem = action.payload;
+            state.value.push(newItem);
+        },
+        removeUnion: (state, action) => {
+            const itemToRemove = action.payload;
+            const list = state.value;
+            const index = list.findIndex(item => item.id === itemToRemove.id);
+            list.splice(index,1)
         }
     }
 });
 
 
-export const { setPlayers, updatePlayer } = playerSlice.actions;
-export const { setEvents, updateEvent } = eventsSlice.actions;
-export const { setClubs, updateClub } = clubsSlice.actions;
-export const { setUnions, updateUnion } = unionsSlice.actions;
+export const { setPlayers, updatePlayer, addPlayer, removePlayer } = playerSlice.actions;
+export const { setEvents, updateEvent, addEvent, removeEvent } = eventsSlice.actions;
+export const { setClubs, updateClub, addClub, removeClub } = clubsSlice.actions;
+export const { setUnions, updateUnion, addUnion, removeUnion } = unionsSlice.actions;
 
 export const curentPlayers = (state) => state.players.value;
 export const curentEvents = (state) => state.events.value;

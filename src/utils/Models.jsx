@@ -19,4 +19,19 @@ export function getFields(response, isPlayer) {
   
     return output;
   }
+
+  export function getEmptyElement(isPlayer){
+    const element = {
+      id: "",
+      name: "",
+      logoURL: ""
+    }
+     if (isPlayer) {
+      element.clubGuestURL = "";
+      element.clubOwnerURL = "";
+      element.unionGuestURL = "";
+      element.unionOwnerURL = "";
+    } 
+    return element;
+  }
   

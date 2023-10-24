@@ -1,7 +1,6 @@
 .EditElement {
     padding: 18px;
-    height: 100vh;
-    border-left: 1px solid gray;
+    height: 100%;
     position: relative;
 }
 
@@ -24,11 +23,7 @@
 }
 
 .Controls {
-    position: absolute;
-    right:16px;
-    bottom:32px;
-    
-    
+    margin-top: 34px;
 }
 
 .Loader {

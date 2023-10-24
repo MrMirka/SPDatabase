@@ -1,10 +1,24 @@
 import React, { useEffect, useState } from "react";
 import styles from './EditElement.module.css'
-import { updatePlayer, updateClub, updateUnion, updateEvent } from '../../../database/dataSlice'
+import {
+    updatePlayer,
+    addPlayer,
+    removePlayer,
+    updateClub,
+    addClub,
+    removeClub,
+    updateUnion,
+    addUnion,
+    removeUnion,
+    addEvent,
+    updateEvent,
+    removeEvent
+    
+} from '../../../database/dataSlice'
 import { useDispatch } from 'react-redux';
 import AvatarElement from "./AvatarElement";
 import TextInput from "../../helpers/UI/TextInput";
-import { makeGroup, makeGroup2, uploadFile } from "../../../utils/Controllers";
+import { makeGroup, makeGroup2, uploadFile, deleteItem } from "../../../utils/Controllers";
 import MyButton from "../../MyButton";
 import MyLoader from "../../helpers/MyLoader";
 
@@ -26,6 +40,21 @@ function EditElement({ currentCollection, currentElement }) {
     const [makeRecord, setMakeRecord] = useState(false)
     const [isSaveClicked, setIsSaveClicked] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [isNewRecord, setIsNewRecord] = useState(false); //Индикатор который показывает одновляем ты мы запись иди делаем новую
+    const [isUpdatelist, setIsUpdatelist] = useState(false)
+
+    const actionMap = {
+        players: removePlayer,
+        clubs: removeClub,
+        unions:removeUnion,
+        events:removeEvent
+    }
+
+    useEffect(() => {
+        if (currentElement && currentElement.id === "") {
+            setIsNewRecord(true);
+        }
+    }, [currentElement])
 
 
     const handleSetFile = (key) => (file) => {
@@ -59,6 +88,15 @@ function EditElement({ currentCollection, currentElement }) {
         setIsSaveClicked(true);
     };
 
+    const handleRemove = () => {
+        const status = deleteItem(element.id, currentCollection)
+        if (status) {
+            dispatch(actionMap[currentCollection](element))
+            setElement(null)
+        }
+
+    }
+
     useEffect(() => {
         if (isSaveClicked) {
             setMakeRecord(true)
@@ -67,10 +105,15 @@ function EditElement({ currentCollection, currentElement }) {
     }, [element, isSaveClicked]);
 
 
-
-
-
-
+    /**
+     * Отслеживаем обновление поля ID при создании новой записи перед диспатчем, что бы не попало пустое значение
+     */
+    useEffect(() => {
+        if (isUpdatelist) {
+            activateDispatch(currentCollection)
+            setIsUpdatelist(false)
+        }
+    }, [element, isUpdatelist]);
 
 
     const dispatch = useDispatch();
@@ -82,16 +125,20 @@ function EditElement({ currentCollection, currentElement }) {
     function activateDispatch(collection) {
         switch (collection) {
             case 'players':
-                dispatch(updatePlayer(element));
+                isNewRecord ? dispatch(addPlayer(element)) : dispatch(updatePlayer(element));
+                setIsNewRecord(false);
                 break;
             case 'events':
-                dispatch(updateEvent(element));
+                isNewRecord ? dispatch(addEvent(element)) : dispatch(updateEvent(element));
+                setIsNewRecord(false);
                 break;
             case 'clubs':
-                dispatch(updateClub(element));
+                isNewRecord ? dispatch(addClub(element)) : dispatch(updateClub(element));
+                setIsNewRecord(false);
                 break;
             case 'unions':
-                dispatch(updateUnion(element));
+                isNewRecord ? dispatch(addUnion(element)) : dispatch(updateUnion(element));
+                setIsNewRecord(false);
                 break;
             default:
                 break;
@@ -112,8 +159,11 @@ function EditElement({ currentCollection, currentElement }) {
                 obj['unionOwnerURL'] = element.unionOwnerURL
             }
             const collection = currentCollection
-            makeGroup2(obj, collection, (status) => {
-                if (status) {
+            makeGroup2(obj, collection, (id) => {
+                if (id && id !== 1) {
+                    setElement({ ...element, id: id })
+                    setIsUpdatelist(true)
+                } else if (id == 1) {
                     activateDispatch(currentCollection)
                 }
             })
@@ -145,7 +195,7 @@ function EditElement({ currentCollection, currentElement }) {
     return (
         <div className={styles.EditElement}>
             {element &&
-                <>   
+                <>
                     <div className={styles.Loader}>
                         {isLoading && <MyLoader />}
                     </div>
@@ -163,7 +213,7 @@ function EditElement({ currentCollection, currentElement }) {
                     <div className={styles.UniformBlock}>
                         {Object.entries(files).filter(([key]) => key !== 'logoURL').map(([key, file]) => (
                             <AvatarElement
-                                name = {key}
+                                name={key}
                                 key={key}
                                 file={file}
                                 setFile={handleSetFile(key)}
@@ -173,9 +223,10 @@ function EditElement({ currentCollection, currentElement }) {
                         ))}
                     </div>
                     <div className={styles.Controls}>
-                    <MyButton onClick={handleSubmit}>Сохранить</MyButton>
+                        <MyButton onClick={handleSubmit}>Сохранить</MyButton>
+                        <MyButton onClick={handleRemove}>Удалить</MyButton>
                     </div>
-                    
+
                 </>
             }
 
