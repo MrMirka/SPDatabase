@@ -13,7 +13,7 @@ import {
     addEvent,
     updateEvent,
     removeEvent
-    
+
 } from '../../../database/dataSlice'
 import { useDispatch } from 'react-redux';
 import AvatarElement from "./AvatarElement";
@@ -21,6 +21,7 @@ import TextInput from "../../helpers/UI/TextInput";
 import { makeGroup, makeGroup2, uploadFile, deleteItem } from "../../../utils/Controllers";
 import MyButton from "../../MyButton";
 import MyLoader from "../../helpers/MyLoader";
+import ColorPicker from "./ColorPicker";
 
 
 function EditElement({ currentCollection, currentElement }) {
@@ -43,11 +44,12 @@ function EditElement({ currentCollection, currentElement }) {
     const [isNewRecord, setIsNewRecord] = useState(false); //Индикатор который показывает одновляем ты мы запись иди делаем новую
     const [isUpdatelist, setIsUpdatelist] = useState(false)
 
+
     const actionMap = {
         players: removePlayer,
         clubs: removeClub,
-        unions:removeUnion,
-        events:removeEvent
+        unions: removeUnion,
+        events: removeEvent
     }
 
     useEffect(() => {
@@ -158,6 +160,10 @@ function EditElement({ currentCollection, currentElement }) {
                 obj['unionGuestURL'] = element.unionGuestURL
                 obj['unionOwnerURL'] = element.unionOwnerURL
             }
+            if (currentCollection === 'clubs' || currentCollection === 'unions') {
+                obj['mainColor'] = element.mainColor
+                obj['secondColor'] = element.secondColor
+            }
             const collection = currentCollection
             makeGroup2(obj, collection, (id) => {
                 if (id && id !== 1) {
@@ -210,6 +216,15 @@ function EditElement({ currentCollection, currentElement }) {
                         />
                         <TextInput element={element} setElement={setElement} />
                     </div>
+
+                    {element.mainColor && element.secondColor &&
+                        <div>
+                            <ColorPicker title={'Основной цвет'} element={element} setElement={setElement} type ={'main'}/>
+                            <ColorPicker title={'Дополнительный цвет'} element={element} setElement={setElement}  type ={'second'}/>
+                        </div>
+
+                    }
+
                     <div className={styles.UniformBlock}>
                         {Object.entries(files).filter(([key]) => key !== 'logoURL').map(([key, file]) => (
                             <AvatarElement

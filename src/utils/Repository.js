@@ -117,6 +117,11 @@ export const addGroup2 = async (obj, groupName) => {
     record.unionOwnerURL = obj.unionOwnerURL
   }
 
+  if(groupName === 'clubs' || groupName === 'unions') {
+    record.mainColor = obj.mainColor
+    record.secondColor = obj.secondColor
+  }
+
   try {
     const newClubRef = await addDoc(clubsCollection, record);
 

@@ -1,10 +1,6 @@
 .AvatarElement {
-    margin: 16px;
     width: 150px;
-   
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
+    
 }
 
 .BigImage {

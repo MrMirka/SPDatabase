@@ -22,7 +22,7 @@ function BaseBlockElements({ currentCollection, focusElement }) {
     const dispatch = useDispatch()
 
     const newRecordHundler = () => {
-        const emptyRecord = getEmptyElement(currentCollection === 'players')
+        const emptyRecord = getEmptyElement(currentCollection)
         console.log(emptyRecord)
         focusElement(emptyRecord)
     }

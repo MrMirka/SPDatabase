@@ -14,12 +14,12 @@
 }
 
 .InfoBlock {
-    height: 150px;
+    
     display: flex;           
     flex-direction: row;     
     align-items: center;    
     justify-content: center; 
-    gap: 10px;    
+    
 }
 
 .Controls {
