@@ -19,9 +19,9 @@ import { useDispatch } from 'react-redux';
 import AvatarElement from "./AvatarElement";
 import TextInput from "../../helpers/UI/TextInput";
 import { makeGroup, makeGroup2, uploadFile, deleteItem } from "../../../utils/Controllers";
-import MyButton from "../../MyButton";
 import MyLoader from "../../helpers/MyLoader";
 import ColorPicker from "./ColorPicker";
+import CounturButton from "../../CounturButton";
 
 
 function EditElement({ currentCollection, currentElement }) {
@@ -218,7 +218,7 @@ function EditElement({ currentCollection, currentElement }) {
                     </div>
 
                     {element.mainColor && element.secondColor &&
-                        <div>
+                        <div className={styles.PickersBlock}>
                             <ColorPicker title={'Основной цвет'} element={element} setElement={setElement} type ={'main'}/>
                             <ColorPicker title={'Дополнительный цвет'} element={element} setElement={setElement}  type ={'second'}/>
                         </div>
@@ -238,8 +238,8 @@ function EditElement({ currentCollection, currentElement }) {
                         ))}
                     </div>
                     <div className={styles.Controls}>
-                        <MyButton onClick={handleSubmit}>Сохранить</MyButton>
-                        <MyButton onClick={handleRemove}>Удалить</MyButton>
+                        <CounturButton onClick={handleSubmit}>Сохранить</CounturButton>
+                        <CounturButton onClick={handleRemove}>Удалить</CounturButton>
                     </div>
 
                 </>

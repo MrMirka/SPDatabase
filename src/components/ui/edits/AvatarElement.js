@@ -17,7 +17,7 @@ function AvatarElement({logoURL,file, setFile, imgSize, name}) {
     return (
         <div className={styles.AvatarElement}>
             <p>{nameMap[name]}</p>
-            <img src={imageUrl} alt ='image' className={imageClass}></img>
+            <img src={imageUrl} alt ='Форма не задана' className={imageClass}></img>
             <InputFile setFile={setFile} />
         </div>
     );

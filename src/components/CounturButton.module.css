@@ -1,0 +1,15 @@
+.CounturButton {
+    width: 150px;
+    height: 50px;
+    border-radius: 25px;
+    background-color: transparent;
+    border: 2px solid gray;
+    margin-right: 12px;
+    color: white;
+    cursor: pointer;
+}
+
+
+.CounturButton:hover {
+    border-color: yellow;
+}

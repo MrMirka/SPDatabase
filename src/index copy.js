@@ -32,22 +32,19 @@ initializeApp(firebaseConfig);
 root.render(
   //<React.StrictMode>
   <Provider store={store}>
-   
-    { 
-      <Router >
+    <Router>
       <Routes>
-        <Route path="/" element={<Root />}>
+        <Route path="./" element={<Root />}>
           <Route index element={<App />} />
           <Route path="database" element={<NestedData />} />
           <Route path="database/groups" element={<ClubsList />} />
         </Route>
       </Routes>
-    </Router> }
+    </Router>
   </Provider>
   //</React.StrictMode>
 );
 
-// <Router basename="/SBdTest" > to public
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

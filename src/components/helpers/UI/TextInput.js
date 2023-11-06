@@ -11,7 +11,7 @@ function TextInput({element, setElement}) {
     useEffect(()=>{setText(element.name)},[element])
 
     return (
-        <input type="text" className={styles.TextInput} value={text} onChange={onChandeHandle}/>
+        <input type="text" className={styles.TextInput} value={text} onChange={onChandeHandle} placeholder='Ваш текст'/>
     );
 }
 
