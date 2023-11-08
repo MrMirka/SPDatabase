@@ -1,5 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+export const authData = createSlice({
+    name: 'userauth',
+    initialState: {
+        value: null
+    },
+    reducers: {
+        setAuth: (state, action) => {
+            state.value = action.payload
+        }
+    }
+})
+
 export const playerSlice = createSlice({
     name: 'players',
     initialState: {
@@ -125,15 +137,18 @@ export const { setPlayers, updatePlayer, addPlayer, removePlayer } = playerSlice
 export const { setEvents, updateEvent, addEvent, removeEvent } = eventsSlice.actions;
 export const { setClubs, updateClub, addClub, removeClub } = clubsSlice.actions;
 export const { setUnions, updateUnion, addUnion, removeUnion } = unionsSlice.actions;
+export const { setAuth } = authData.actions;
 
 export const curentPlayers = (state) => state.players.value;
 export const curentEvents = (state) => state.events.value;
 export const curentClubs = (state) => state.clubs.value;
-export const curentUnions = (state) => state.unions.value;
+export const curentUnions = (state) => state.unions.value
+export const curentAuth = (state) => state.userauth.value
 
 export default {
     players: playerSlice.reducer,
     events: eventsSlice.reducer,
     clubs: clubsSlice.reducer,
     unions: unionsSlice.reducer,
+    userauth: authData.reducer
 };

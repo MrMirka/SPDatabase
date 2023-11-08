@@ -1,7 +1,8 @@
 import styles from './App.module.css'
-import Authentication from './Authentication';
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Authentication from './components/Authentication';
 
 function App() {
   const [authStatus, setAuthStatus] = useState(false);

@@ -10,21 +10,33 @@ import styles from './Nestdata.module.css'
 import DatabaseList from "../DatabaseList";
 import BaseBlockElements from "../common/BaseBlockElements";
 import EditElement from "../ui/edits/EditElement";
+import { useSelector } from "react-redux";
+import { curentAuth } from "../../database/dataSlice";
+import { useNavigate } from 'react-router-dom';
 
 function NestedData() {
     const [selectCollection, setSelectCollection] = useState('players');
     const [focusElement, setFocusElement] = useState(null);
     const [isFocus, setIsFocus] = useState(false)
+    const navigate = useNavigate();
 
-  useEffect(()=>{console.log(focusElement)},[focusElement])
+    const authId = useSelector(curentAuth)
+    useEffect(()=>{
+        if(authId==null) {
+            navigate('/')
+        }
+    },[authId])
+
+  //useEffect(()=>{console.log(focusElement)},[focusElement])
     
     return (  
         <>
-            <div className={styles.Nest}>
+        {authId && <div className={styles.Nest}>
                 <DatabaseList focusItem = { setSelectCollection }/>
                 <BaseBlockElements currentCollection = { selectCollection } focusElement = {setFocusElement}/>
                 <EditElement currentCollection = {selectCollection} currentElement = {focusElement}/>
-            </div>
+            </div> }
+            
         </>
     );
 }

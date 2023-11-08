@@ -1,14 +1,17 @@
 import React from "react";
 import { useState } from "react";
-import { signEmailPass } from "./utils/Repository";
-import MyInput from "./components/MyInput";
-import MyButton from "./components/MyButton";
+import { signEmailPass } from "../utils/Repository";
+import MyInput from "./MyInput";
+import MyButton from "./MyButton";
 import styles from './Authentication.module.css'
 import { useNavigate } from 'react-router-dom';
+ import { setAuth } from "../database/dataSlice";
+import { useDispatch } from "react-redux";
 
 function Authentication ({setStatus}) {
     const [authContent, setAuthContent] = useState({name: "", password:""})
     const navigate = useNavigate();
+    const dispatch = useDispatch()
 
     const onChange  = (e) => {
         const key = e.target.name
@@ -21,9 +24,8 @@ function Authentication ({setStatus}) {
         try {
             const authData = await signEmailPass(authContent.name, authContent.password);
             if (authData) {
-                console.log(authData)
-                const uid = authData.localId;
-                localStorage.setItem('uid', uid);
+                const uid = authData.email;
+                dispatch(setAuth(uid))
                 setStatus(true);
                 navigate('/database');
               } else {
