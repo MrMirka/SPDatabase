@@ -115,6 +115,8 @@ export const addGroup2 = async (obj, groupName) => {
     record.clubOwnerURL = obj.clubOwnerURL
     record.unionGuestURL = obj.unionGuestURL
     record.unionOwnerURL = obj.unionOwnerURL
+    record.club = obj.club
+    record.union = obj.union
   }
 
   if(groupName === 'clubs' || groupName === 'unions') {
@@ -168,6 +170,7 @@ export const updateGroup2 = async (obj, groupName) => {
   const clubDocRef = doc(db, groupName, obj.id);
 
   try {
+    console.log(obj)
     await updateDoc(clubDocRef, obj);
 
     console.log('Запись обновлена');

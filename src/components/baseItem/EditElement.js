@@ -1,27 +1,24 @@
 import React, { useEffect, useState } from "react";
 import styles from './EditElement.module.css'
+import { useSelector } from 'react-redux';
+import { curentClubs, curentUnions } from '../../database/dataSlice'
 import {
-    updatePlayer,
-    addPlayer,
     removePlayer,
-    updateClub,
-    addClub,
     removeClub,
-    updateUnion,
-    addUnion,
     removeUnion,
-    addEvent,
-    updateEvent,
     removeEvent
 
-} from '../../../database/dataSlice'
+} from '../../database/dataSlice'
 import { useDispatch } from 'react-redux';
-import AvatarElement from "./AvatarElement";
-import TextInput from "../../helpers/UI/TextInput";
-import { makeGroup, makeGroup2, uploadFile, deleteItem } from "../../../utils/Controllers";
-import MyLoader from "../../helpers/MyLoader";
-import ColorPicker from "./ColorPicker";
-import CounturButton from "../../CounturButton";
+import AvatarElement from "../ui/avatar/AvatarElement";
+import TextInput from "../ui/inputs/TextInput";
+import { makeGroup, deleteItem, uploadImagesAndGetUrls } from "../../utils/Controllers";
+import MyLoader from "../helpers/MyLoader";
+import ColorPicker from "../ui/color/ColorPicker";
+import CounturButton from "../ui/buttons/CounturButton";
+import DropList from "../ui/drop/DropList";
+import { activateDispatch } from "../../database/databaseUtility";
+import { getObjectForSubmin } from "../../utils/Models";
 
 
 function EditElement({ currentCollection, currentElement }) {
@@ -36,14 +33,19 @@ function EditElement({ currentCollection, currentElement }) {
 
     const initialFilesState = currentCollection === 'players' ? { ...baseFilesState, ...playerFilesState } : baseFilesState;
 
-    const [element, setElement] = useState(currentElement)
-    const [files, setFiles] = useState(initialFilesState);
+    const [element, setElement] = useState(currentElement) //Выбранный лемент из коллекции
+    const [files, setFiles] = useState(initialFilesState); //Записи соотвествия файлой типу и типов форм
     const [makeRecord, setMakeRecord] = useState(false)
-    const [isSaveClicked, setIsSaveClicked] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isNewRecord, setIsNewRecord] = useState(false); //Индикатор который показывает одновляем ты мы запись иди делаем новую
+    const [isSaveClicked, setIsSaveClicked] = useState(false); //Состояние кнопки "Сохранить"
+    const [isLoading, setIsLoading] = useState(false); //Видимость лоудера
+    const [isNewRecord, setIsNewRecord] = useState(false); //Индикатор который показывает одновляем мы запись иди делаем новую
     const [isUpdatelist, setIsUpdatelist] = useState(false)
 
+
+    const clubs = useSelector(curentClubs)
+    const unions = useSelector(curentUnions)
+
+    const dispatch = useDispatch();
 
     const actionMap = {
         players: removePlayer,
@@ -52,6 +54,7 @@ function EditElement({ currentCollection, currentElement }) {
         events: removeEvent
     }
 
+    //Устанавливаем статус если запись новая
     useEffect(() => {
         if (currentElement && currentElement.id === "") {
             setIsNewRecord(true);
@@ -63,24 +66,14 @@ function EditElement({ currentCollection, currentElement }) {
         setFiles(prevFiles => ({ ...prevFiles, [key]: file }));
     };
 
-    const uploadImagesAndGetUrls = async () => {
-        const urls = await Promise.all(Object.keys(files).map((key) =>
-            new Promise((resolve) => {
-                if (files[key]) {
-                    uploadFile(files[key], key, (url) => {
-                        resolve({ key, url });
-                    });
-                } else {
-                    resolve(null);
-                }
-            })
-        ));
-        return urls.filter(Boolean);
-    };
-
+    /**
+     * Инициалицизуем сохранинеи записи
+     * на этом этапе сохраняем файлы в Store и получаем их URL
+     * которые сохраняем в текушем элементе
+     */
     const handleSubmit = async () => {
         setIsLoading(true)
-        const urls = await uploadImagesAndGetUrls();
+        const urls = await uploadImagesAndGetUrls(files, currentCollection);
         const updatedElement = { ...element };
         urls.forEach(({ key, url }) => {
             updatedElement[key] = url;
@@ -90,15 +83,20 @@ function EditElement({ currentCollection, currentElement }) {
         setIsSaveClicked(true);
     };
 
+    //Удаляем запись
     const handleRemove = () => {
         const status = deleteItem(element.id, currentCollection)
         if (status) {
             dispatch(actionMap[currentCollection](element))
             setElement(null)
         }
-
     }
 
+    /**
+     * Эффект запускается в случае изменения состояния нажатия кнопки
+     * и изменения состояния текушего объекта, что сигнализирует необходимости
+     * сонхронизации с сервером
+     */
     useEffect(() => {
         if (isSaveClicked) {
             setMakeRecord(true)
@@ -112,65 +110,25 @@ function EditElement({ currentCollection, currentElement }) {
      */
     useEffect(() => {
         if (isUpdatelist) {
-            activateDispatch(currentCollection)
+            activateDispatch(dispatch, element, currentCollection, isNewRecord, setIsNewRecord)
             setIsUpdatelist(false)
         }
     }, [element, isUpdatelist]);
 
 
-    const dispatch = useDispatch();
 
     /**
-     * Вносим изменеие в глобальное состояние Redux
-     * @param {*} collection текущая коллекция
+     * Записывает данные на сервер
      */
-    function activateDispatch(collection) {
-        switch (collection) {
-            case 'players':
-                isNewRecord ? dispatch(addPlayer(element)) : dispatch(updatePlayer(element));
-                setIsNewRecord(false);
-                break;
-            case 'events':
-                isNewRecord ? dispatch(addEvent(element)) : dispatch(updateEvent(element));
-                setIsNewRecord(false);
-                break;
-            case 'clubs':
-                isNewRecord ? dispatch(addClub(element)) : dispatch(updateClub(element));
-                setIsNewRecord(false);
-                break;
-            case 'unions':
-                isNewRecord ? dispatch(addUnion(element)) : dispatch(updateUnion(element));
-                setIsNewRecord(false);
-                break;
-            default:
-                break;
-        }
-    }
-
     useEffect(() => {
         if (makeRecord) {
-            const obj = {
-                id: element.id,
-                name: element.name,
-                logoURL: element.logoURL
-            }
-            if (currentCollection === 'players') {
-                obj['clubGuestURL'] = element.clubGuestURL
-                obj['clubOwnerURL'] = element.clubOwnerURL
-                obj['unionGuestURL'] = element.unionGuestURL
-                obj['unionOwnerURL'] = element.unionOwnerURL
-            }
-            if (currentCollection === 'clubs' || currentCollection === 'unions') {
-                obj['mainColor'] = element.mainColor
-                obj['secondColor'] = element.secondColor
-            }
-            const collection = currentCollection
-            makeGroup2(obj, collection, (id) => {
+            const obj = getObjectForSubmin(element, currentCollection)
+            makeGroup(obj, currentCollection, (id) => {
                 if (id && id !== 1) {
                     setElement({ ...element, id: id })
                     setIsUpdatelist(true)
                 } else if (id == 1) {
-                    activateDispatch(currentCollection)
+                    activateDispatch(dispatch, element, currentCollection, isNewRecord, setIsNewRecord)
                 }
             })
             setMakeRecord(false)
@@ -180,7 +138,7 @@ function EditElement({ currentCollection, currentElement }) {
     }, [makeRecord])
 
     /**
-     * Обнуляем состояние елемента при смене фокуса на другой элемент вданной коллекции
+     * Обнуляем состояние елемента при смене фокуса на другой элемент в данной коллекции
      */
     useEffect(() => {
         setElement(currentElement)
@@ -219,10 +177,18 @@ function EditElement({ currentCollection, currentElement }) {
 
                     {element.mainColor && element.secondColor &&
                         <div className={styles.PickersBlock}>
-                            <ColorPicker title={'Основной цвет'} element={element} setElement={setElement} type ={'main'}/>
-                            <ColorPicker title={'Дополнительный цвет'} element={element} setElement={setElement}  type ={'second'}/>
+                            <ColorPicker title={'Основной цвет'} element={element} setElement={setElement} type={'main'} />
+                            <ColorPicker title={'Дополнительный цвет'} element={element} setElement={setElement} type={'second'} />
                         </div>
 
+                    }
+                    {currentCollection === 'players' &&
+                        (
+                            <>
+                                <DropList type={'club'} list={clubs} element={element} selectItem={setElement}></DropList>
+                                <DropList type={'union'} list={unions} element={element} selectItem={setElement}></DropList>
+                            </>
+                        )
                     }
 
                     <div className={styles.UniformBlock}>

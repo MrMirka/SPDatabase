@@ -5,9 +5,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import DatabaseList from './components/DatabaseList';
-import ClubsList from './components/clubs/ClubsList';
-import Root from './components/Root';
+
+
+import Root from './components/structure/Root';
 import { initializeApp } from 'firebase/app';
 import { Provider } from 'react-redux';
 import store from './database/store'
@@ -39,7 +39,6 @@ root.render(
         <Route path="/" element={<Root />}>
           <Route index element={<App />} />
           <Route path="database" element={<NestedData />} />
-          <Route path="database/groups" element={<ClubsList />} />
         </Route>
       </Routes>
     </Router> }

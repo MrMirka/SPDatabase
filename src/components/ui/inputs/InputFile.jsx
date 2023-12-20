@@ -15,7 +15,7 @@ function InputFile({ setFile }) {
         const file = e.target.files[0];
 
         if (file) {
-            getChankByType(file, 'iTXt').then(description => { console.log(description) }).catch (error => {console.error('Ошибка при получении описания:', error);})
+            //getChankByType(file, 'iTXt').then(description => { console.log(description) }).catch (error => {console.error('Ошибка при получении описания:', error);})
         }
 
         setFile(file);

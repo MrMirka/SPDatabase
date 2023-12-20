@@ -2,7 +2,7 @@ import styles from './App.module.css'
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Authentication from './components/Authentication';
+import Authentication from './components/autorization/Authentication';
 
 function App() {
   const [authStatus, setAuthStatus] = useState(false);

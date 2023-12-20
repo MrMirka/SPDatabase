@@ -1,11 +1,11 @@
 import React from "react";
 import { useState } from "react";
-import { signEmailPass } from "../utils/Repository";
-import MyInput from "./MyInput";
-import MyButton from "./MyButton";
+import { signEmailPass } from "../../utils/Repository";
+import MyInput from "../ui/inputs/MyInput";
+import MyButton from "../ui/buttons/MyButton";
 import styles from './Authentication.module.css'
 import { useNavigate } from 'react-router-dom';
- import { setAuth } from "../database/dataSlice";
+ import { setAuth } from "../../database/dataSlice";
 import { useDispatch } from "react-redux";
 
 function Authentication ({setStatus}) {

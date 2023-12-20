@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { getEmptyElement, getFields } from "../../utils/Models";
 import styles from './BaseBlockElements.module.css'
-import ListElement from "../ui/ListElement";
+import ListElement from "../ui/list/ListElement";
 import { useSelector, useDispatch } from 'react-redux';
 import { curentPlayers, curentEvents, curentClubs, curentUnions } from '../../database/dataSlice'
 import { setPlayers, setEvents, setClubs, setUnions } from "../../database/dataSlice";
 import { fetchCollection } from "../../utils/Repository";
 import MyLoader from "../helpers/MyLoader";
-import SearchInput from "../ui/SearchInput";
+import SearchInput from "../ui/search/SearchInput";
+import { fetchAllData } from "../../utils/Controllers";
 
 function BaseBlockElements({ currentCollection, focusElement }) {
     const [isLoading, setIsLoading] = useState(false);
@@ -23,7 +24,6 @@ function BaseBlockElements({ currentCollection, focusElement }) {
 
     const newRecordHundler = () => {
         const emptyRecord = getEmptyElement(currentCollection)
-        console.log(emptyRecord)
         focusElement(emptyRecord)
     }
 
@@ -42,11 +42,16 @@ function BaseBlockElements({ currentCollection, focusElement }) {
         events: events
     };
 
-    function setElements(data) {
-        const action = actionMap[currentCollection];
-        if (action) {
-            dispatch(action(data));
-        }
+    function dispatchElements(dataPlayers, dataClubs, dataUnions, dataEvents) {
+        const players = actionMap['players'];
+        const clubs = actionMap['clubs'];
+        const unions = actionMap['unions'];
+        const events = actionMap['events'];
+
+        dispatch(players(dataPlayers));
+        dispatch(clubs(dataClubs));
+        dispatch(unions(dataUnions));
+        dispatch(events(dataEvents));
     }
 
     /**
@@ -63,44 +68,36 @@ function BaseBlockElements({ currentCollection, focusElement }) {
      * Получаем данные коллекции с сервера
      */
     const getGroups = async () => {
-        setIsLoading(true);
-        try {
-            const collectionData = await fetchCollection(currentCollection);
-            const data = getFields(collectionData, currentCollection === 'players');
-            if (data) {
-                setElements(data);
+        if (!players || !clubs || !events || !unions) {
+            setIsLoading(true);
+            const { dataPlayers, dataClubs, dataUnions, dataEvents } = await fetchAllData()
+            if (dataPlayers && dataClubs && dataUnions && dataEvents) {
+                console.log(dataPlayers)
+                dispatchElements(dataPlayers, dataClubs, dataUnions, dataEvents);
             }
             setTimeout(() => {
                 setIsLoading(false);
             }, 1000);
-        } catch (error) {
-            console.log(error)
-            setIsLoading(false);
         }
     }
+
     useEffect(() => { getGroups() }, [currentCollection]); //Фокус коллекции при клике
 
-    const filteredElements = selectElements.filter(element => 
+    const filteredElements = selectElements.filter(element =>
         element.name.toLowerCase().includes(searchValue.toLowerCase())
     );
 
 
     return (
         <>
-
             <div className={styles.BaseBlockElements}>
-
                 <div className={styles.Loader}>
                     {isLoading && <MyLoader />}
-                    <SearchInput value ={searchValue} setValue = {setSearchValue}/>
+                    <SearchInput value={searchValue} setValue={setSearchValue} />
                     <button onClick={newRecordHundler}>Добавить</button>
                 </div>
-                <div></div>
-               
                 <ListElement elements={filteredElements} focusElement={focusElement} />
             </div>
-
-
         </>
 
     );

@@ -1,11 +1,15 @@
 import React, { useState } from "react";
-import InputFile from "../../helpers/UI/InputFile";
+import InputFile from "../inputs/InputFile";
 import styles from './AvatarElement.module.css'
+import { DEFAULT_EMPTY_AVATAR } from '../../structure/ComminData'
 
-function AvatarElement({logoURL,file, setFile, imgSize, name}) {
+
+function AvatarElement({logoURL, file, setFile, imgSize, name}) {
     
-    const imageUrl = file ? URL.createObjectURL(file) : logoURL;
+    const imageSrc = file ? URL.createObjectURL(file) : logoURL;
     const imageClass = imgSize === 'small' ? styles.SmallImage : styles.BigImage;
+    const imageUrl = imageSrc ? imageSrc : DEFAULT_EMPTY_AVATAR
+    
 
     const nameMap = {
         clubGuestURL: "Клуб гость",
