@@ -17,7 +17,6 @@ import { useNavigate } from 'react-router-dom';
 function NestedData() {
     const [selectCollection, setSelectCollection] = useState('players');
     const [focusElement, setFocusElement] = useState(null);
-    const [editkey, setEditKey] = useState(0)
   
     const navigate = useNavigate();
 
@@ -33,9 +32,9 @@ function NestedData() {
     return (  
         <>
         {authId && <div className={styles.Nest}>
-                <DatabaseList focusItem = { setSelectCollection} setkey = {setEditKey}/>
+                <DatabaseList focusItem = { setSelectCollection} />
                 <BaseBlockElements currentCollection = { selectCollection } focusElement = {setFocusElement}/>
-                <EditElement  key = {editkey} currentCollection = {selectCollection} currentElement = {focusElement}/>
+                <EditElement   currentCollection = {selectCollection} currentElement = {focusElement}/>
             </div> }
             
         </>

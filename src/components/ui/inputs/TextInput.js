@@ -1,18 +1,21 @@
-import React, {useEffect, useState}from "react";
+import React, { useEffect, useState, memo } from "react";
 import styles from './TextInput.module.css'
-function TextInput({element, setElement}) {
+const TextInput = memo(({ element, setElement }) => {
     const [text, setText] = useState(element.name);
-    const onChandeHandle = (e) => {
-        const newValue = e.target.value;
+
+    const handleChange = (event) => {
+        const newValue = event.target.value;
         setText(newValue)
         setElement(prevElement => ({ ...prevElement, name: newValue }));
     }
 
-    useEffect(()=>{setText(element.name)},[element])
+    useEffect(() => { setText(element.name) }, [element])
 
     return (
-        <input type="text" className={styles.TextInput} value={text} onChange={onChandeHandle} placeholder='Ваш текст'/>
+        <input type="text" className={styles.TextInput} value={text} onChange={handleChange} placeholder='Ваш текст' />
     );
-}
+}, (prevProps, nextProps) => {
+    return prevProps.element.name === nextProps.element.name;
+})
 
 export default TextInput;

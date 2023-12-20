@@ -23,6 +23,7 @@ function BaseBlockElements({ currentCollection, focusElement }) {
     const dispatch = useDispatch()
 
     const newRecordHundler = () => {
+        console.log('ПУСТО')
         const emptyRecord = getEmptyElement(currentCollection)
         focusElement(emptyRecord)
     }
@@ -72,7 +73,6 @@ function BaseBlockElements({ currentCollection, focusElement }) {
             setIsLoading(true);
             const { dataPlayers, dataClubs, dataUnions, dataEvents } = await fetchAllData()
             if (dataPlayers && dataClubs && dataUnions && dataEvents) {
-                console.log(dataPlayers)
                 dispatchElements(dataPlayers, dataClubs, dataUnions, dataEvents);
             }
             setTimeout(() => {

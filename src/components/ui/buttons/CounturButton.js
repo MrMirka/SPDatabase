@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, memo } from "react";
 import styles from './CounturButton.module.css'
-function CounturButton(props) {
+function CounturButton(props){
     return (
         <button className={styles.CounturButton} {...props}></button>
     );

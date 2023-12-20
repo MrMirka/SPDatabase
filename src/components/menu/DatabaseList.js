@@ -12,7 +12,6 @@ function DatabaseList({focusItem, setkey}) {
 
     const handleChangeFocus = (key) => {
         focusItem(key)
-        setkey(prev=>prev+1)
     }
     
 

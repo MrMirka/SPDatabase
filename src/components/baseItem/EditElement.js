@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import styles from './EditElement.module.css'
 import { useSelector } from 'react-redux';
 import { curentClubs, curentUnions } from '../../database/dataSlice'
@@ -21,7 +21,7 @@ import { activateDispatch } from "../../database/databaseUtility";
 import { getObjectForSubmin } from "../../utils/Models";
 
 
-function EditElement({ currentCollection, currentElement }) {
+const EditElement = memo(({ currentCollection, currentElement }) => {
 
     const baseFilesState = { logoURL: null };
     const playerFilesState = {
@@ -30,6 +30,8 @@ function EditElement({ currentCollection, currentElement }) {
         unionGuestURL: null,
         unionOwnerURL: null
     };
+
+    useEffect(()=> {console.log("RENDER")})
 
     const initialFilesState = currentCollection === 'players' ? { ...baseFilesState, ...playerFilesState } : baseFilesState;
 
@@ -53,6 +55,7 @@ function EditElement({ currentCollection, currentElement }) {
         unions: removeUnion,
         events: removeEvent
     }
+    useEffect(()=>{console.log(element)})
 
     //Устанавливаем статус если запись новая
     useEffect(() => {
@@ -78,7 +81,7 @@ function EditElement({ currentCollection, currentElement }) {
         urls.forEach(({ key, url }) => {
             updatedElement[key] = url;
         });
-
+        
         setElement(updatedElement);
         setIsSaveClicked(true);
     };
@@ -150,9 +153,9 @@ function EditElement({ currentCollection, currentElement }) {
     * Обнуляем состояние елемента при смене фокуса на другую коллекцию
     */
     useEffect(() => {
-        setElement(null)
         const newFilesState = currentCollection === 'players' ? { ...baseFilesState, ...playerFilesState } : baseFilesState;
         setFiles(newFilesState);
+        setElement(null)
     }, [currentCollection])
 
 
@@ -213,6 +216,8 @@ function EditElement({ currentCollection, currentElement }) {
 
         </div>
     );
-}
+}, (prevProps, nextProps) => {
+    return prevProps.currentCollection === nextProps.currentCollection;
+})
 
 export default EditElement;

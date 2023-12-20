@@ -170,9 +170,7 @@ export const updateGroup2 = async (obj, groupName) => {
   const clubDocRef = doc(db, groupName, obj.id);
 
   try {
-    console.log(obj)
     await updateDoc(clubDocRef, obj);
-
     console.log('Запись обновлена');
     return 1;
   } catch (error) {
