@@ -21,7 +21,7 @@ import { activateDispatch } from "../../database/databaseUtility";
 import { getObjectForSubmin } from "../../utils/Models";
 
 
-const EditElement = memo(({ currentCollection, currentElement }) => {
+function EditElement({ currentCollection, currentElement }) {
 
     const baseFilesState = { logoURL: null };
     const playerFilesState = {
@@ -216,8 +216,6 @@ const EditElement = memo(({ currentCollection, currentElement }) => {
 
         </div>
     );
-}, (prevProps, nextProps) => {
-    return prevProps.currentCollection === nextProps.currentCollection;
-})
+}
 
 export default EditElement;

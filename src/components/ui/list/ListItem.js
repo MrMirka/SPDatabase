@@ -7,7 +7,7 @@ function ListItem({item, focusElement}) {
     }
     return (
         <div className={styles.ListItem} onClick={()=> {onClickHandle(item)}}>
-            <img src={item.logoURL} alt ='image'></img>
+            {/* <img src={item.logoURL} alt ='image'></img> */}
             <p>{item.name}</p>
         </div>
     );

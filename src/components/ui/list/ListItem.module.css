@@ -1,9 +1,9 @@
 .ListItem {
     display: flex;
     align-items: center;
-    height: 64px;
+    height: 24px;
     margin: 12px;
-    padding: 8px;
+    padding: 18px;
     border: 1px solid gray;
     cursor: pointer;
     
