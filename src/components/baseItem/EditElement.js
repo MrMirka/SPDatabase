@@ -31,7 +31,7 @@ function EditElement({ currentCollection, currentElement }) {
         unionOwnerURL: null
     };
 
-    useEffect(()=> {console.log("RENDER")})
+    useEffect(() => { console.log("RENDER") })
 
     const initialFilesState = currentCollection === 'players' ? { ...baseFilesState, ...playerFilesState } : baseFilesState;
 
@@ -55,7 +55,7 @@ function EditElement({ currentCollection, currentElement }) {
         unions: removeUnion,
         events: removeEvent
     }
-    useEffect(()=>{console.log(element)})
+    useEffect(() => { console.log(element) })
 
     //Устанавливаем статус если запись новая
     useEffect(() => {
@@ -81,7 +81,7 @@ function EditElement({ currentCollection, currentElement }) {
         urls.forEach(({ key, url }) => {
             updatedElement[key] = url;
         });
-        
+
         setElement(updatedElement);
         setIsSaveClicked(true);
     };
@@ -188,8 +188,8 @@ function EditElement({ currentCollection, currentElement }) {
                     {currentCollection === 'players' &&
                         (
                             <>
-                                <DropList type={'club'} list={clubs} element={element} selectItem={setElement}></DropList>
-                                <DropList type={'union'} list={unions} element={element} selectItem={setElement}></DropList>
+                                <DropList title={'Клуб'} type={'club'} list={clubs} element={element} selectItem={setElement}></DropList>
+                                <DropList title={'Сборная'} type={'union'} list={unions} element={element} selectItem={setElement}></DropList>
                             </>
                         )
                     }

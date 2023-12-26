@@ -106,3 +106,4 @@ export async function uploadImagesAndGetUrls(files, currentCollection) {
   ));
   return urls.filter(Boolean);
 };
+

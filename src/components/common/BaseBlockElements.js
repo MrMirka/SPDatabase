@@ -5,7 +5,7 @@ import ListElement from "../ui/list/ListElement";
 import { useSelector, useDispatch } from 'react-redux';
 import { curentPlayers, curentEvents, curentClubs, curentUnions } from '../../database/dataSlice'
 import { setPlayers, setEvents, setClubs, setUnions } from "../../database/dataSlice";
-import { fetchCollection } from "../../utils/Repository";
+import { fetchCollection, getStructure } from "../../utils/Repository";
 import MyLoader from "../helpers/MyLoader";
 import SearchInput from "../ui/search/SearchInput";
 import { fetchAllData } from "../../utils/Controllers";

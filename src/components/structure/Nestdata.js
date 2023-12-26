@@ -13,12 +13,17 @@ import EditElement from "../baseItem/EditElement";
 import { useSelector } from "react-redux";
 import { curentAuth } from "../../database/dataSlice";
 import { useNavigate } from 'react-router-dom';
+import { getStructure } from "../../utils/Repository";
 
 function NestedData() {
     const [selectCollection, setSelectCollection] = useState('players');
     const [focusElement, setFocusElement] = useState(null);
   
     const navigate = useNavigate();
+    
+    const store = async () => {
+        console.log(await getStructure())
+    }
 
     const authId = useSelector(curentAuth)
     useEffect(()=>{
@@ -26,6 +31,9 @@ function NestedData() {
             navigate('/')
         }
     },[authId])
+    useEffect(()=>{
+        store()
+    },[])
 
 
     

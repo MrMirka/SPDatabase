@@ -1,4 +1,4 @@
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL, listAll } from "firebase/storage";
 import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, deleteDoc } from 'firebase/firestore';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
@@ -119,7 +119,7 @@ export const addGroup2 = async (obj, groupName) => {
     record.union = obj.union
   }
 
-  if(groupName === 'clubs' || groupName === 'unions') {
+  if (groupName === 'clubs' || groupName === 'unions') {
     record.mainColor = obj.mainColor
     record.secondColor = obj.secondColor
   }
@@ -226,6 +226,42 @@ export const deleteDocumentById = async (id, collectionName) => {
     return false;
   }
 };
+
+/**
+ * Рекурсивно строим структуру файлового хранилища
+ * @param {*} folder имя папки с которой начинаем поиск
+ * @returns 
+ */
+export const getStructure = async (folder ='/') => {
+  const storage = getStorage();
+  const listRef = ref(storage, folder);
+  try {
+    const res = await listAll(listRef);
+    let structure = {}; 
+    let files = []; 
+
+    for (const folderRef of res.prefixes) {
+      const folderName = folderRef.name;
+      const subFolderStructure = await getStructure(folder + '/' + folderName);
+      structure[folderName] = subFolderStructure; 
+    }
+
+    for (const itemRef of res.items) {
+      const fileName = itemRef.name;
+      files.push(fileName);
+    }
+
+    if (files.length > 0) {
+      structure['files'] = files;
+    }
+
+    return structure; 
+  } catch (error) {
+    console.error("Error getting structure:", error);
+    return {}; 
+  }
+};
+
 
 
 

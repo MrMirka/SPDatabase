@@ -1,6 +1,7 @@
 import React, { useState, useEffect, memo, useCallback } from 'react';
+import styles from './DropList.module.css'
 
-const DropList = memo(({ type, list, element, selectItem }) => {
+const DropList = memo(({ title, type, list, element, selectItem }) => {
     const [currentValue, setCurrentValue] = useState('');
     const key = type === 'club' ? 'club' : 'union';
 
@@ -20,11 +21,15 @@ const DropList = memo(({ type, list, element, selectItem }) => {
     }
 
     return (
-        <select value={currentValue} onChange={handleElementChange}>
+        <div className={styles.container}>
+            <span className={styles.title}>{title}</span>
+            <select value={currentValue} onChange={handleElementChange}>
             {list.map((item) => (
                 <option key={item.id} value={item.name}>{item.name}</option>
             ))}
         </select>
+        </div>
+        
     );
 },
     (prevProps, nextProps) => {
