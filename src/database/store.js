@@ -7,6 +7,7 @@ export default configureStore({
         clubs: redusers.clubs,
         unions: redusers.unions,
         events: redusers.events,
+        banners: redusers.banners,
         userauth: redusers.userauth
     }
 })

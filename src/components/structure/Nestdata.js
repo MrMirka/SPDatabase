@@ -22,7 +22,7 @@ function NestedData() {
     const navigate = useNavigate();
     
     const store = async () => {
-        console.log(await getStructure())
+        //console.log(await getStructure())
     }
 
     const authId = useSelector(curentAuth)
@@ -31,6 +31,7 @@ function NestedData() {
             navigate('/')
         }
     },[authId])
+
     useEffect(()=>{
         store()
     },[])

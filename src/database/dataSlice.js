@@ -132,17 +132,49 @@ export const unionsSlice = createSlice({
     }
 });
 
+export const bannersSlice = createSlice({
+    name: 'banners',
+    initialState: {
+        value: null
+    },
+    reducers: {
+        setBanners: (state, action) => {
+            state.value = action.payload
+        },
+        updateBanners: (state, action) => {
+            const bannersToUpdate = action.payload
+            const banners = state.value
+            const index = banners.findIndex(banner => banner.id === bannersToUpdate.id)
+            if(index !== -1) {
+                banners[index] = bannersToUpdate
+            }
+        },
+        addBanners: (state, action) => {
+            const newItem = action.payload;
+            state.value.push(newItem);
+        },
+        removeBanners: (state, action) => {
+            const itemToRemove = action.payload;
+            const list = state.value;
+            const index = list.findIndex(item => item.id === itemToRemove.id);
+            list.splice(index,1)
+        }
+    }
+});
+
 
 export const { setPlayers, updatePlayer, addPlayer, removePlayer } = playerSlice.actions;
 export const { setEvents, updateEvent, addEvent, removeEvent } = eventsSlice.actions;
 export const { setClubs, updateClub, addClub, removeClub } = clubsSlice.actions;
 export const { setUnions, updateUnion, addUnion, removeUnion } = unionsSlice.actions;
+export const { setBanners, updateBanners, addBanners, removeBanners } = bannersSlice.actions;
 export const { setAuth } = authData.actions;
 
 export const curentPlayers = (state) => state.players.value;
 export const curentEvents = (state) => state.events.value;
 export const curentClubs = (state) => state.clubs.value;
 export const curentUnions = (state) => state.unions.value
+export const curentBanners = (state) => state.banners.value
 export const curentAuth = (state) => state.userauth.value
 
 export default {
@@ -150,5 +182,6 @@ export default {
     events: eventsSlice.reducer,
     clubs: clubsSlice.reducer,
     unions: unionsSlice.reducer,
+    banners: bannersSlice.reducer,
     userauth: authData.reducer
 };

@@ -8,6 +8,7 @@ function DatabaseList({focusItem, setkey}) {
         clubs: 'Клубы',
         unions: 'Сборные',
         events: 'Эвенты',
+        banners: 'Баннеры',
     }
 
     const handleChangeFocus = (key) => {

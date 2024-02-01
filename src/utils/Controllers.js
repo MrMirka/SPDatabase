@@ -1,4 +1,4 @@
-import { getFields } from "./Models";
+import { getFields, getBannerFields } from "./Models";
 import { addGroup, addGroup2, deleteDocumentById, fetchCollection, updateGroup, updateGroup2, updatePlayerUniform, uploadToFirebase } from "./Repository";
 
 /**
@@ -74,15 +74,18 @@ export async function fetchAllData() {
   const collectionClubs = await fetchCollection('clubs');
   const collectionUnions = await fetchCollection('unions');
   const collectionEvents = await fetchCollection('events');
+  const collectionBanners = await fetchCollection('banners');
   const dataPlayers = getFields(collectionPlayers, true);
   const dataClubs = getFields(collectionClubs, false);
   const dataUnions = getFields(collectionUnions, false);
   const dataEvents = getFields(collectionEvents, false)
+  const dataBanners = getBannerFields(collectionBanners)
   return {
     dataPlayers: dataPlayers,
     dataClubs: dataClubs,
     dataUnions: dataUnions,
-    dataEvents: dataEvents
+    dataEvents: dataEvents,
+    dataBanners: dataBanners
   }
 }
 

@@ -1,3 +1,4 @@
+
 /**
  * Преобразует ответ от сервера в объект для работы
  * @param {*} response ответ от сервета
@@ -25,6 +26,20 @@ export function getFields(response, isPlayer) {
       toReturn.union = union;
     }
 
+    return toReturn;
+  });
+
+  return output;
+}
+
+export function getBannerFields(response) {
+  const output = response.docs.map((item) => {
+    const id = item.id;
+    const { name } = item.data();
+    const toReturn = {
+      id: id,
+      name: name,
+    }
     return toReturn;
   });
 
@@ -82,4 +97,40 @@ export function getObjectForSubmin(element, currentCollection) {
     obj['secondColor'] = element.secondColor
   }
   return obj
+}
+
+/**
+ * Получаем всех игроков которые состоят в конкретной группе
+ * @param {*} players игроки
+ * @param {*} name имя группы
+ * @returns 
+ */
+export function getPlayersByGroup(players, name) {
+  const playersInGroup = players.filter((player) => { return (player.club === name || player.union === name) })
+  return playersInGroup
+}
+
+
+/**
+ * Возвращаем url формы игрока
+ * @param {*} player игрок
+ * @param {bool} isOwner хозяин или гость
+ * @param {bool} isClub  клуб или сборная
+ * @returns 
+ */
+export function getPlayerCloth(player, isOwner, isClub) {
+  if (isOwner) {
+    if (isClub) {
+      return player.clubOwnerURL
+    } else {
+      return player.unionOwnerURL
+    }
+  } else {
+    if (isClub) {
+      return player.clubGuestURL
+    } else {
+      return player.unionGuestURL
+    }
+  }
+
 }

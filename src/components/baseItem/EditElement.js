@@ -31,7 +31,7 @@ function EditElement({ currentCollection, currentElement }) {
         unionOwnerURL: null
     };
 
-    useEffect(() => { console.log("RENDER") })
+    //useEffect(() => { console.log("RENDER") })
 
     const initialFilesState = currentCollection === 'players' ? { ...baseFilesState, ...playerFilesState } : baseFilesState;
 
@@ -55,7 +55,7 @@ function EditElement({ currentCollection, currentElement }) {
         unions: removeUnion,
         events: removeEvent
     }
-    useEffect(() => { console.log(element) })
+    //useEffect(() => { console.log(element) })
 
     //Устанавливаем статус если запись новая
     useEffect(() => {
