@@ -1,0 +1,41 @@
+.ConstructorBlock {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.EventBlock {
+    display: flex;
+    
+    justify-content: flex-start;
+   
+}
+
+.LeftRightBlock {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+}
+
+.LeftBlock, .RightBlock {
+    padding: 18px;
+    border: 1px solid white;
+    display: flex;
+    flex-direction: column;
+}
+.Content {
+    display: flex;
+    justify-content: flex-start;
+    
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+}
+
+.Caption {
+    color: yellow;
+}

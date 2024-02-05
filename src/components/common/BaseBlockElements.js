@@ -85,7 +85,7 @@ function BaseBlockElements({ currentCollection, focusElement }) {
         //console.log(currentCollection)
         const data = dataMap[currentCollection];
         if (data) {
-            console.log(data)
+            //console.log(data)
             setSelectElements(data);
         }
     }, [players, clubs, unions, events, banners, currentCollection]);

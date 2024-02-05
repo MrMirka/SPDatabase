@@ -35,10 +35,11 @@ export function getFields(response, isPlayer) {
 export function getBannerFields(response) {
   const output = response.docs.map((item) => {
     const id = item.id;
-    const { name } = item.data();
+    const { name, teamplate } = item.data();
     const toReturn = {
       id: id,
       name: name,
+      teamplate: teamplate
     }
     return toReturn;
   });

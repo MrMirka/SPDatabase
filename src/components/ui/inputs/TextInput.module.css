@@ -10,3 +10,15 @@
 .TextInput:focus {
     border-bottom: 1px solid gray;
 }
+.TextInputSmall:focus {
+    border-bottom: 1px solid gray;
+}
+
+.TextInputSmall {
+    border: none;        
+    outline: none;          
+    background: transparent;
+    color: white;
+    font-size: 21px;
+    width: 100%;
+}

@@ -80,6 +80,7 @@ export async function fetchAllData() {
   const dataUnions = getFields(collectionUnions, false);
   const dataEvents = getFields(collectionEvents, false)
   const dataBanners = getBannerFields(collectionBanners)
+  console.log(dataBanners)
   return {
     dataPlayers: dataPlayers,
     dataClubs: dataClubs,

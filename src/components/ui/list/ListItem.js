@@ -3,11 +3,11 @@ import styles from './ListItem.module.css'
 
 function ListItem({item, focusElement}) {
     const onClickHandle = (clickedItem) => {
+        //focusElement(null)
         focusElement(clickedItem)
     }
     return (
         <div className={styles.ListItem} onClick={()=> {onClickHandle(item)}}>
-            {/* <img src={item.logoURL} alt ='image'></img> */}
             <p>{item.name}</p>
         </div>
     );

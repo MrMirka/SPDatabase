@@ -14,38 +14,46 @@ import { useSelector } from "react-redux";
 import { curentAuth } from "../../database/dataSlice";
 import { useNavigate } from 'react-router-dom';
 import { getStructure } from "../../utils/Repository";
+import BannerConstructor from "../baseItem/BannerConstructor";
 
 function NestedData() {
     const [selectCollection, setSelectCollection] = useState('players');
     const [focusElement, setFocusElement] = useState(null);
-  
+
     const navigate = useNavigate();
-    
+
     const store = async () => {
         //console.log(await getStructure())
     }
 
-    const authId = useSelector(curentAuth)
     useEffect(()=>{
-        if(authId==null) {
+        console.log(focusElement)
+    }, [focusElement])
+
+    const authId = useSelector(curentAuth)
+    useEffect(() => {
+        if (authId == null) {
             navigate('/')
         }
-    },[authId])
+    }, [authId])
 
-    useEffect(()=>{
+    useEffect(() => {
         store()
-    },[])
+    }, [])
 
 
-    
-    return (  
+
+    return (
         <>
-        {authId && <div className={styles.Nest}>
-                <DatabaseList focusItem = { setSelectCollection} />
-                <BaseBlockElements currentCollection = { selectCollection } focusElement = {setFocusElement}/>
-                <EditElement   currentCollection = {selectCollection} currentElement = {focusElement}/>
-            </div> }
-            
+            {authId && <div className={styles.Nest}>
+                <DatabaseList focusItem={setSelectCollection} />
+                <BaseBlockElements currentCollection={selectCollection} focusElement={setFocusElement} />
+                {selectCollection !== 'banners' ?
+                    <EditElement currentCollection={selectCollection} currentElement={focusElement} /> :
+                    <BannerConstructor currentCollection={selectCollection} element={focusElement} />}
+                {/* <EditElement   currentCollection = {selectCollection} currentElement = {focusElement}/> */}
+            </div>}
+
         </>
     );
 }
