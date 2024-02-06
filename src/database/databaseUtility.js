@@ -7,6 +7,8 @@ import {
     addUnion,
     addEvent,
     updateEvent,
+    addBanner,
+    updateBanner,
 } from './dataSlice'
 
 export function activateDispatch(dispatch, element, collection, isNewRecord, setIsNewRecord) {
@@ -25,6 +27,10 @@ export function activateDispatch(dispatch, element, collection, isNewRecord, set
             break;
         case 'unions':
             isNewRecord ? dispatch(addUnion(element)) : dispatch(updateUnion(element));
+            setIsNewRecord(false);
+            break;
+        case 'banners':
+            isNewRecord ? dispatch(addBanner(element)) : dispatch(updateBanner(element));
             setIsNewRecord(false);
             break;
         default:

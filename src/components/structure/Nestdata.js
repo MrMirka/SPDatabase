@@ -26,9 +26,7 @@ function NestedData() {
         //console.log(await getStructure())
     }
 
-    useEffect(()=>{
-        console.log(focusElement)
-    }, [focusElement])
+   //useEffect(()=>{console.log(focusElement)},[focusElement])
 
     const authId = useSelector(curentAuth)
     useEffect(() => {

@@ -141,7 +141,7 @@ export const bannersSlice = createSlice({
         setBanners: (state, action) => {
             state.value = action.payload
         },
-        updateBanners: (state, action) => {
+        updateBanner: (state, action) => {
             const bannersToUpdate = action.payload
             const banners = state.value
             const index = banners.findIndex(banner => banner.id === bannersToUpdate.id)
@@ -149,11 +149,11 @@ export const bannersSlice = createSlice({
                 banners[index] = bannersToUpdate
             }
         },
-        addBanners: (state, action) => {
+        addBanner: (state, action) => {
             const newItem = action.payload;
             state.value.push(newItem);
         },
-        removeBanners: (state, action) => {
+        removeBanner: (state, action) => {
             const itemToRemove = action.payload;
             const list = state.value;
             const index = list.findIndex(item => item.id === itemToRemove.id);
@@ -167,7 +167,7 @@ export const { setPlayers, updatePlayer, addPlayer, removePlayer } = playerSlice
 export const { setEvents, updateEvent, addEvent, removeEvent } = eventsSlice.actions;
 export const { setClubs, updateClub, addClub, removeClub } = clubsSlice.actions;
 export const { setUnions, updateUnion, addUnion, removeUnion } = unionsSlice.actions;
-export const { setBanners, updateBanners, addBanners, removeBanners } = bannersSlice.actions;
+export const { setBanners, updateBanner, addBanner, removeBanner } = bannersSlice.actions;
 export const { setAuth } = authData.actions;
 
 export const curentPlayers = (state) => state.players.value;

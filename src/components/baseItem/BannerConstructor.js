@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { curentEvents, curentClubs, curentUnions, curentPlayers } from '../../database/dataSlice'
 import DropListFlex from "../ui/drop/DropListFlex";
 import { getPlayersByGroup } from "../../utils/Models";
+import CounturButton from "../ui/buttons/CounturButton";
 
 function BannerConstructor({ currentCollection, element }) {
     const [banner, setBanner] = useState(element)
@@ -13,7 +14,7 @@ function BannerConstructor({ currentCollection, element }) {
     const [event, setEvent] = useState(null)
     const [leftLogo, setLeftLogo] = useState(null)
     const [rightLogo, setRightLogo] = useState(null)
-    const [leftPlayer, setLeftPlayer] = useState("")
+    const [leftPlayer, setLeftPlayer] = useState(null)
     const [rightPlayer, setRightPlayer] = useState(null)
     const [leftPlayersFilter, setLeftPlayerFilter] = useState([])
     const [rightPlayersFilter, setRightPlayerFilter] = useState([])
@@ -21,6 +22,8 @@ function BannerConstructor({ currentCollection, element }) {
     const [rightLogoCaption, setRigthLogoCaption] = useState('')
     const [dateCaption, setDateCaption] = useState('')
     const [contentCaption, setContentCaption] = useState('')
+    const [eventCaption, setEventCaption] = useState('')
+
 
 
     const clubs = useSelector(curentClubs)
@@ -28,6 +31,27 @@ function BannerConstructor({ currentCollection, element }) {
     const events = useSelector(curentEvents)
     const players = useSelector(curentPlayers)
     const groups = [...clubs, ...unions]
+
+    const handleSubmit = () => { }
+    const handleRemove = () => { }
+
+    useEffect(() => {
+        if (element && element.param) {
+            setEvent(element.param.eventCaption)
+            setLeftLogo(element.param.leftLogoCaption)
+            setLeftPlayer(element.param.leftPlayerName)
+            setRightLogo(element.param.rightLogoCaption)
+            setRightPlayer(element.param.rigthPlayerName)
+            setLeftLogoCaption(element.param.leftLogoCaption)
+            setRigthLogoCaption(element.param.rightLogoCaption)
+            setEventCaption(element.param.eventCaption)
+            setDateCaption(element.param.date)
+            setContentCaption(element.param.title)
+
+        }
+    }, [element])
+
+    useEffect(() => { console.log(leftLogo) }, [leftLogo])
 
     useEffect(() => {
         if (leftLogo) {
@@ -73,18 +97,22 @@ function BannerConstructor({ currentCollection, element }) {
                     <div className={styles.LeftRightBlock}>
                         <div className={styles.LeftBlock}>
                             <p>Левый блок</p>
-                            <DropListFlex title={'Группа'} list={groups} element={leftLogo} setElement={setLeftLogo} />
-                            <DropListFlex title={'Игрок'} list={leftPlayersFilter} element={leftPlayer} setElement={setLeftPlayer} />
+                            {(leftLogo && groups.length > 0) && <DropListFlex title={'Группа'} list={groups} element={leftLogo} setElement={setLeftLogo} />}
+                            {(leftPlayersFilter.length > 0 && leftPlayer) && <DropListFlex title={'Игрок'} list={leftPlayersFilter} element={leftPlayer} setElement={setLeftPlayer} />}
                         </div>
                         <div className={styles.RightBlock}>
                             <p>Правый блок</p>
-                            <DropListFlex title={'Группа'} list={groups} element={rightLogo} setElement={setRightLogo} />
-                            <DropListFlex title={'Игрок'} list={rightPlayersFilter} element={rightPlayer} setElement={setRightPlayer} />
+                            {(rightLogo && groups.length > 0) && <DropListFlex title={'Группа'} list={groups} element={rightLogo} setElement={setRightLogo} />}
+                            {(rightPlayersFilter.length > 0 && rightPlayer) && <DropListFlex title={'Игрок'} list={rightPlayersFilter} element={rightPlayer} setElement={setRightPlayer} />}
                         </div>
 
                     </div>
                     <div className={styles.Content}>
                         <h3>Текстовой блок</h3>
+                        <div>
+                            <span className={styles.Caption} >Событие</span>
+                            <TextInputFlex element={eventCaption} setElement={setEventCaption} placeholder={"Введите ваш текст"} style={'small'} />
+                        </div>
                         <div>
                             <span className={styles.Caption} >Левый лого</span>
                             <TextInputFlex element={leftLogoCaption} setElement={setLeftLogoCaption} placeholder={"Введите ваш текст"} style={'small'} />
@@ -103,7 +131,14 @@ function BannerConstructor({ currentCollection, element }) {
                         </div>
 
                     </div>
-                </>}
+                    <div className={styles.Controls}>
+                        <CounturButton onClick={handleSubmit}>Сохранить</CounturButton>
+                        <CounturButton onClick={handleRemove}>Удалить</CounturButton>
+                    </div>
+                </>
+
+            }
+
 
         </div>
     );
