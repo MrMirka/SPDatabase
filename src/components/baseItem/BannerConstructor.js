@@ -6,6 +6,7 @@ import { curentEvents, curentClubs, curentUnions, curentPlayers } from '../../da
 import DropListFlex from "../ui/drop/DropListFlex";
 import { getPlayersByGroup } from "../../utils/Models";
 import CounturButton from "../ui/buttons/CounturButton";
+import Paginations from "../ui/pagination/Paginations";
 
 function BannerConstructor({ currentCollection, element }) {
     const [banner, setBanner] = useState(element)
@@ -23,6 +24,7 @@ function BannerConstructor({ currentCollection, element }) {
     const [dateCaption, setDateCaption] = useState('')
     const [contentCaption, setContentCaption] = useState('')
     const [eventCaption, setEventCaption] = useState('')
+    const [languages, setLanguage] = useState(['Русский', 'Английский', 'Партугальский'])
 
 
 
@@ -109,6 +111,7 @@ function BannerConstructor({ currentCollection, element }) {
                     </div>
                     <div className={styles.Content}>
                         <h3>Текстовой блок</h3>
+                        <Paginations data = {languages} />
                         <div>
                             <span className={styles.Caption} >Событие</span>
                             <TextInputFlex element={eventCaption} setElement={setEventCaption} placeholder={"Введите ваш текст"} style={'small'} />

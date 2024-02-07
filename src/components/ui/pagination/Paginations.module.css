@@ -1,0 +1,21 @@
+.Pagination {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-start;
+}
+
+.Item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 8px;
+    height: 30px;
+    border-radius: 2px;
+    border: 1px solid gray;
+    cursor: pointer;
+}
+
+ .Item:hover {
+    border-color: yellow;
+    background-color: red;
+} 

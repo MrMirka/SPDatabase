@@ -32,6 +32,11 @@ export function getFields(response, isPlayer) {
   return output;
 }
 
+/**
+ * Преобразует ответ от сервера в объект для работы
+ * @param {*} response Баннары
+ * @returns 
+ */
 export function getBannerFields(response) {
   const output = response.docs.map((item) => {
     const id = item.id;
